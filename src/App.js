@@ -1,25 +1,35 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Store from './Store';
+import FolderPage from './components/FolderPage';
+import MainPage from './components/MainPage';
+import DetailPage from './components/DetailPage';
+import Header from './components/Header';
 import './App.css';
+import { Route } from 'react-router-dom';
 
 class App extends Component {
+  state = {
+    folders: [],
+    notes: []
+  };
+
+  renderMainRoutes = () => {
+    return (
+      {
+      <>
+        <Route exact path="/" render={() => <MainPage />} />
+        <Route path="/folder" component={FolderPage} />
+        <Route path="/detail" component={DetailPage} />
+      </>
+      }
+    );
+  };
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <Header />
+        <main>{this.renderMainRoutes()}</main>
       </div>
     );
   }

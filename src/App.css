@@ -36,7 +36,7 @@ Sidebar Classes
   padding: 20px;
 }
 
-.highlight {
+.highlight > * {
   background-image: linear-gradient(90deg, #4facfe, #00f2fe);
 }
 

@@ -2,26 +2,46 @@ import React, { Component } from 'react';
 import Store from './Store';
 import FolderPage from './components/FolderPage';
 import MainPage from './components/MainPage';
-import DetailPage from './components/DetailPage';
+import NotePage from './components/NotePage';
 import Header from './components/Header';
 import './App.css';
 import { Route } from 'react-router-dom';
 
 class App extends Component {
   state = {
-    folders: [],
-    notes: []
+    folders: Store.folders,
+    notes: Store.notes,
   };
 
   renderMainRoutes = () => {
     return (
-      {
-      <>
-        <Route exact path="/" render={() => <MainPage />} />
-        <Route path="/folder" component={FolderPage} />
-        <Route path="/detail" component={DetailPage} />
-      </>
-      }
+      <React.Fragment>
+        <Route 
+        exact path="/" 
+        render={() => <MainPage 
+                      folders={this.state.folders}
+                      notes={this.state.notes}
+                      />
+        }/>
+
+        <Route 
+        path="/folder/:folderId" 
+        render={({ match }) => <FolderPage 
+                      folders={this.state.folders}
+                      notes={this.state.notes}
+                      folderId={match.params.folderId}
+                      />
+        }/>
+
+        <Route 
+        path="/note/:noteId" 
+        render={({ match, history }) => <NotePage 
+                                noteId={match.params.noteId}
+                                history={history}
+                                notes={this.state.notes}/>
+              } />
+
+      </React.Fragment>
     );
   };
 

@@ -1,13 +1,18 @@
-import React from 'react';
+import React from 'react'
 
-function Note(props) {
+export default function Note(props) {
   return (
-    <li className="note">
-      <h2 className="note-heading">Note 1</h2>
-      <p className="note-paragraph">Date modified on 2rd Jan 2019</p>
-      <button className="note-delete-btn">Delete Note</button>
-    </li>
-  );
+    <>
+    <ul className="notes-list">
+          <li className="note">
+            <h2 className="note-heading">{props.note.name}</h2>
+            <p className="note-paragraph">{props.note.modified}</p>
+          </li>
+        </ul>
+        <p>
+          {props.note.content}
+    </p>
+    </>
+  )
 }
 
-export default Note;

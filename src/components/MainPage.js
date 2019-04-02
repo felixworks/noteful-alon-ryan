@@ -1,29 +1,33 @@
 import React from 'react';
+import FolderNav from './FolderNav';
+import NoteList from './NoteList';
+import {Link} from 'react-router-dom';
 
-class MainPage extends React.Component {
-  render() {
+function MainPage(props) {
+
+  let notes = props.notes.map((note) => {
+
     return (
-      <div className="container">
-        <nav className="sidebar">
-          <ul className="folders-list">
-            <li className="folder">Folder 1</li>
-            <li className="folder">Folder 2</li>
-            <li className="folder">Folder 3</li>
-          </ul>
-          <button className="sidebar-add-btn">Add Folder</button>
-        </nav>
-        <main className="main">
-          <ul className="notes-list">
-            <li className="note">
-              <h2 className="note-heading">Note 1</h2>
-              <p className="note-paragraph">Date modified on 2rd Jan 2019</p>
-              <button className="note-delete-btn">Delete Note</button>
-            </li>
-          </ul>
-        </main>
-      </div>
-    );
-  }
+      <li className="note" key={note.id}>
+        <Link to={`/note/${note.id}`}>
+          <h2 className="note-heading">{note.name}</h2>
+        </Link>
+        <p className="note-paragraph">{note.modified}</p>
+        <button className="note-delete-btn">Delete Note</button>
+      </li>
+    )
+  })
+
+  return (
+    <div className="container">
+      <FolderNav folders={props.folders}/>
+      <main className="main">
+        {notes}
+      </main>
+    </div>
+  );
+
 }
 
 export default MainPage;
+

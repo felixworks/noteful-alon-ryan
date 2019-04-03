@@ -1,30 +1,30 @@
 import React from 'react';
 import FolderNav from './FolderNav';
-import NoteList from './NoteList';
-import {Link} from 'react-router-dom';
+import ListNote from './ListNote';
+import { MyContext } from '../AppContext';
+import List from './List';
 
-function MainPage(props) {
-
-  let notes = props.notes.map((note) => {
-
-    return (
-      <li className="note" key={note.id}>
-        <Link to={`/note/${note.id}`}>
-          <h2 className="note-heading">{note.name}</h2>
-        </Link>
-        <p className="note-paragraph">{note.modified}</p>
-        <button className="note-delete-btn">Delete Note</button>
-      </li>
-    )
-  })
+function MainPage(props) {  
 
   return (
-    <div className="container">
-      <FolderNav folders={props.folders}/>
-      <main className="main">
-        {notes}
-      </main>
-    </div>
+    <MyContext.Consumer>
+      {(context)=> {
+        let createdNotes = context.notes.map((note) => {
+          return (
+            <ListNote note={note} />
+          )
+        })
+
+        return (
+          <div className="container">
+          <FolderNav folders={context.folders}/>
+          <main className="main">
+            <List notes={context.notes} />
+          </main>
+          </div>
+        )
+      }}
+    </MyContext.Consumer>
   );
 
 }

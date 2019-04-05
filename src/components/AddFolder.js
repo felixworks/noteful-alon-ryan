@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import UUID from 'uuid/v4';
+import { MyContext } from '../AppContext';
 
 export default class AddFolder extends Component {
     state = {
@@ -28,30 +29,12 @@ export default class AddFolder extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        let data = {
+        let newFolder = {
             id: UUID(),
             name: this.state.folderName
         };
         e.target.reset()
-
-
-        console.log(UUID());
-        fetch('http://localhost:9090/folders', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => {
-            console.log(res);
-            if (res.status === 201) {
-                return res;
-            }
-            throw new Error('POST failed for some reason')
-        })
-        .catch(error => console.error('Error:', error))
-
+        this.context.addFolder(newFolder);
     }
 
   render() {
@@ -64,3 +47,5 @@ export default class AddFolder extends Component {
     )
   }
 }
+
+AddFolder.contextType = MyContext;

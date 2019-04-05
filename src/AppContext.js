@@ -30,12 +30,30 @@ class AppContext extends Component {
         });
     }
 
+    addNote = (newNote) => {
+        let newNotes = this.state.notes;
+        newNotes.push(newNote);
+        this.setState({
+            notes: newNotes
+        });
+    }
+
+    addFolder = (newFolder) => {
+        let newFolderList = this.state.folders;
+        newFolderList.push(newFolder);
+        this.setState({
+            folders: newFolderList
+        })
+    }
+
 
     render() {
         return (
         <MyContext.Provider value={{...this.state,
                                     deleteNote: this.deleteNote,
-                                    addFolder: this.addFolder}}>
+                                    addNote: this.addNote,
+                                    addFolder: this.addFolder,
+                                    }}>
             {this.props.children}
         </MyContext.Provider>
         )

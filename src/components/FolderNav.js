@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom';
 import AddFolder from './AddFolder';
 
 function FolderNav(props) {
-
   let folders = props.folders.map((folder) => {
     return <NavLink 
             to={`/folder/${folder.id}`} 

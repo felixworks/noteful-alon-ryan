@@ -1,5 +1,7 @@
 import React from 'react';
 import UUID from 'uuid/v4';
+import { MyContext } from '../AppContext';
+
 
 export default class AddNote extends React.Component {
     state = {
@@ -41,17 +43,19 @@ export default class AddNote extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        let data ={
+        let newNote ={
             id: UUID(),
             name: this.state.noteName,
             modified: new Date().toDateString(),
             folderId: this.state.folderId,
             content: this.state.content
         }
+
+    
     
         fetch('http://localhost:9090/notes', {
             method: 'POST',
-            body: JSON.stringify(data),
+            body: JSON.stringify(newNote),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -59,6 +63,7 @@ export default class AddNote extends React.Component {
         .then(res => {
             console.log(res);
             if (res.status === 201) {
+                this.context.addNote(newNote);
                 return res;
             }
             throw new Error('POST failed for some reason')
@@ -85,3 +90,4 @@ export default class AddNote extends React.Component {
         )
     }
 }
+AddNote.contextType = MyContext;

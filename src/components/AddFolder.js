@@ -44,8 +44,13 @@ export default class AddFolder extends Component {
             }
         })
         .then(res => {
-            console.log(res)
+            console.log(res);
+            if (res.status === 201) {
+                return res;
+            }
+            throw new Error('POST failed for some reason')
         })
+        .catch(error => console.error('Error:', error))
 
     }
 

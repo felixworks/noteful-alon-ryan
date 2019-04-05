@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ListNote from './ListNote';
+import AddNote from './AddNote';
 
 
 function List(props) {
@@ -16,13 +17,16 @@ function List(props) {
   }
   
   return (
-    <ul className="notes-list">
-      {notes.map((note) => {
-        return (
-            <ListNote note={note} />
-        )
-      })}
-    </ul>
+      <>
+      <AddNote folders={props.folders}/>
+      <ul className="notes-list">
+        {notes.map((note) => {
+          return (
+              <ListNote note={note} />
+          )
+        })}
+      </ul>
+      </>
   );
 }
 

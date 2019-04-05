@@ -13,7 +13,7 @@ function MainPage(props) {
           <div className="container">
           <FolderNav folders={context.folders} />
           <main className="main">
-            <List notes={context.notes} />
+            <List notes={context.notes} folders={context.folders}/>
           </main>
           </div>
         )

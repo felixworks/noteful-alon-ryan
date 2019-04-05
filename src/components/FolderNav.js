@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import AddFolder from './AddFolder';
 
 function FolderNav(props) {
 
@@ -17,7 +18,7 @@ function FolderNav(props) {
       <ul className="folders-list">
         {folders}
       </ul>
-      <button className="sidebar-add-btn">Add Folder</button>
+      <AddFolder />
     </nav>
   );
 }

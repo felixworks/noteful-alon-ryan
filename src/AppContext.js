@@ -30,9 +30,12 @@ class AppContext extends Component {
         });
     }
 
+
     render() {
         return (
-        <MyContext.Provider value={{...this.state, deleteNote: this.deleteNote}}>
+        <MyContext.Provider value={{...this.state,
+                                    deleteNote: this.deleteNote,
+                                    addFolder: this.addFolder}}>
             {this.props.children}
         </MyContext.Provider>
         )

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Store from '../Store';
+
 import FolderPage from '../components/FolderPage';
 import MainPage from '../components/MainPage';
 import NotePage from '../components/NotePage';

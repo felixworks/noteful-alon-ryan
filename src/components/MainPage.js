@@ -9,15 +9,9 @@ function MainPage(props) {
   return (
     <MyContext.Consumer>
       {(context)=> {
-        let createdNotes = context.notes.map((note) => {
-          return (
-            <ListNote note={note} />
-          )
-        })
-
         return (
           <div className="container">
-          <FolderNav folders={context.folders}/>
+          <FolderNav folders={context.folders} />
           <main className="main">
             <List notes={context.notes} />
           </main>

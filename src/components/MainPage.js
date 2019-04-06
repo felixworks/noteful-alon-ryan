@@ -1,6 +1,5 @@
 import React from 'react';
 import FolderNav from './FolderNav';
-import ListNote from './ListNote';
 import { MyContext } from '../AppContext';
 import List from './List';
 

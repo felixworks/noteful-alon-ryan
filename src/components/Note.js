@@ -3,21 +3,6 @@ import { MyContext } from '../AppContext';
 import { Link } from 'react-router-dom';
 
 export default function Note(props) {
-  
-  function sendDeleteRequest(noteId) {
-    fetch(`http://localhost:9090/notes/${noteId}`, {
-      method: 'DELETE',
-      headers: {
-        'content-type' : 'application/json'
-      },
-    })
-    .then(res => {
-      if(res.ok) {
-
-      }
-    })
-    .catch(err => new Error(err));
-  }
 
   return (
     <>
@@ -32,25 +17,8 @@ export default function Note(props) {
     </p>
     <MyContext.Consumer>
       {(context) => {
-
-        function sendDeleteRequest(noteId) {
-          fetch(`http://localhost:9090/notes/${noteId}`, {
-            method: 'DELETE',
-            headers: {
-              'content-type' : 'application/json'
-            },
-          })
-          .then(res => {
-            if(res.ok) {
-              context.deleteNote(noteId);
-            } else {
-              throw new Error('bad response');
-            }
-          })
-          .catch(err => new Error(err));
-        }
         return (
-            <button onClick={() => sendDeleteRequest(props.note.id)}>
+            <button onClick={() => context.deleteNote(props.note.id)}>
               <Link to="/">Delete</Link>
             </button>
         )

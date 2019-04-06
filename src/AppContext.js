@@ -21,6 +21,8 @@ class AppContext extends Component {
         .catch(err => new Error(err));
     }
 
+
+
     deleteNote = (noteId) => {
         let newNotes = this.state.notes.filter((note) => {
             return note.id !== noteId;
@@ -31,19 +33,49 @@ class AppContext extends Component {
     }
 
     addNote = (newNote) => {
-        let newNotes = this.state.notes;
-        newNotes.push(newNote);
-        this.setState({
-            notes: newNotes
-        });
+        fetch('http://localhost:9090/notes', {
+            method: 'POST',
+            body: JSON.stringify(newNote),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => {
+            console.log(res);
+            if (res.status === 201) {
+                let newNotes = this.state.notes;
+                newNotes.unshift(newNote);
+                this.setState({
+                    notes: newNotes
+                });
+                return res;
+            }
+            throw new Error('POST failed for some reason')
+        })
+        .catch(error => console.error('Error:', error))
     }
 
     addFolder = (newFolder) => {
-        let newFolderList = this.state.folders;
-        newFolderList.push(newFolder);
-        this.setState({
-            folders: newFolderList
+        fetch('http://localhost:9090/folders', {
+            method: 'POST',
+            body: JSON.stringify(newFolder),
+            headers: {
+                'Content-Type': 'application/json'
+            }
         })
+        .then(res => {
+            console.log(res);
+            if (res.status === 201) {
+                let newFolderList = this.state.folders;
+                newFolderList.push(newFolder);
+                this.setState({
+                    folders: newFolderList
+                })
+                return;
+            }
+            throw new Error('POST failed for some reason')
+        })
+        .catch(error => console.error('Error:', error))
     }
 
 

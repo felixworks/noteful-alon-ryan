@@ -1,6 +1,7 @@
 import React from 'react';
 import UUID from 'uuid/v4';
 import { MyContext } from '../AppContext';
+import PropTypes from 'prop-types';
 
 
 export default class AddNote extends React.Component {
@@ -8,24 +9,28 @@ export default class AddNote extends React.Component {
         noteName: '',
         content: '',
         folderName: '',
-        hasError: true
+        hasError: false,
+        errorMessage: '',
+        folderId: 'b0715efe-ffaf-11e8-8eb2-f2801f1b9fd1'
     }
 
     updateName(noteName) {
         this.setState({
             noteName: noteName
-        }, () => {this.validateNoteName(noteName)})
+        })
     }
 
-    validateNoteName(noteName) {
+    validateNoteName(noteName, callback) {
         if(noteName.length !== 0) {
-            this.setState({hasError: false});
-            return;
+            this.setState({hasError: false},() => {
+                callback();
+            });
+            console.log('name longer than 0');
         } else {
             this.setState({
                 hasError: true,
                 errorMessage: 'Note name must be at least 1 character long'
-            })
+            },()=>{ callback() })
         }
     }
 
@@ -43,33 +48,31 @@ export default class AddNote extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        let newNote ={
-            id: UUID(),
-            name: this.state.noteName,
-            modified: new Date().toDateString(),
-            folderId: this.state.folderId,
-            content: this.state.content
-        }
-
-    
-    
-        fetch('http://localhost:9090/notes', {
-            method: 'POST',
-            body: JSON.stringify(newNote),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => {
-            console.log(res);
-            if (res.status === 201) {
+        e.target.reset();
+        this.validateNoteName(this.state.noteName, ()=> {
+            if(!this.state.hasError) {
+                let newNote ={
+                    id: UUID(),
+                    name: this.state.noteName,
+                    modified: new Date().toDateString(),
+                    folderId: this.state.folderId,
+                    content: this.state.content
+                }
                 this.context.addNote(newNote);
-                return res;
+                this.setState({
+                    noteName: ''
+                })
+                return;
+            } else {
+                console.log('error name not valid');
             }
-            throw new Error('POST failed for some reason')
-        })
-        .catch(error => console.error('Error:', error))
+        });
     }
+
+    displayErrorMessage = (message) => {
+        return <div style={{color: "red"}}>{message}</div>
+    }
+
     render() {
         return (
             <form onSubmit={(e) => this.handleSubmit(e)}>
@@ -81,13 +84,19 @@ export default class AddNote extends React.Component {
                 <select onChange={(e) => this.updateFolderId(e.target.value)}>
                     {this.props.folders.map(folder => {
                         return (
-                            <option value={folder.id}>{folder.name}</option>
+                            <option key={folder.id} value={folder.id}>{folder.name}</option>
                         )
                     })}
                 </select>
                 <button type="submit">Submit</button>
+                {this.state.hasError && this.displayErrorMessage(this.state.errorMessage)}
             </form>
         )
     }
 }
+
+AddNote.propTypes = {
+    folders: PropTypes.arrayOf(PropTypes.object)
+}
+
 AddNote.contextType = MyContext;

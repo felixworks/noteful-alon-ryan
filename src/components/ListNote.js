@@ -1,11 +1,16 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { MyContext } from '../AppContext';
+import PropTypes from 'prop-types';
 
 
 export default function ListNote(props) {
 
-  const { id, name, modified } = props.note;
+  const { id, name, modified, content } = props.note;
+  if(!content) {
+    throw new Error();
+  }
+
   return (
     <li className="note" key={id}>
         <Link to={`/note/${id}`}>
@@ -19,4 +24,8 @@ export default function ListNote(props) {
         </MyContext.Consumer>
     </li>
   )
+}
+
+ListNote.propTypes = {
+  note: PropTypes.object
 }

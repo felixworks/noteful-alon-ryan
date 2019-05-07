@@ -1,50 +1,57 @@
-import React, { Component } from 'react'
-import UUID from 'uuid/v4';
-import { MyContext } from '../AppContext';
+import React, { Component } from "react";
+import UUID from "uuid/v4";
+import { MyContext } from "../AppContext";
 
 export default class AddFolder extends Component {
-    state = {
-        folderName: '',
-        hasError: true,
-        errorMessage: ''
-    }
+  state = {
+    folderName: "",
+    errorMessage: ""
+  };
 
-    handleAddFolder(newFolderName) {
-        this.setState({
-            folderName: newFolderName
-        }, () => {this.validateFolderName(this.state.folderName)})
-    }
+  handleFolderNameChange = e => {
+    console.log("handleAddFolder runs");
+    this.setState({
+      folderName: e.target.value
+    });
+  };
 
-    validateFolderName(folderName) {
-        if(folderName.length !== 0) {
-            this.setState({hasError: false});
-            return;
-        } else {
-            this.setState({
-                hasError: true,
-                errorMessage: 'Folder name must be at least 1 character long'
-            })
-        }  
-    }
+  validateFolderName(folderName) {
+    return folderName.length !== 0;
+  }
 
-    handleSubmit(e) {
-        e.preventDefault();
-        let newFolder = {
-            id: UUID(),
-            name: this.state.folderName
-        };
-        e.target.reset()
-        this.context.addFolder(newFolder);
+  handleSubmit = e => {
+    e.preventDefault();
+    if (this.validateFolderName(this.state.folderName)) {
+      let newFolder = {
+        id: UUID(),
+        name: this.state.folderName
+      };
+      e.target.reset();
+      this.context.addFolder(newFolder);
+      this.setState({
+        errorMessage: ""
+      });
+    } else {
+      this.setState({
+        errorMessage: "Please add a name for the folder you are trying to add."
+      });
     }
+  };
 
   render() {
     return (
-      <form onSubmit={(e) => this.handleSubmit(e)}>
-          <label htmlFor="addFolderInput">Add Folder</label>
-          <input onChange={(e) => this.handleAddFolder(e.target.value)} id="addFolderInput" type="text" className="add-folder" />
-          <button type="submit">Add</button>
+      <form onSubmit={this.handleSubmit}>
+        <label htmlFor="addFolderInput">Add Folder</label>
+        <input
+          onChange={this.handleFolderNameChange}
+          id="addFolderInput"
+          type="text"
+          className="add-folder"
+        />
+        <button type="submit">Add</button>
+        <p>{this.state.errorMessage ? this.state.errorMessage : ""}</p>
       </form>
-    )
+    );
   }
 }
 
